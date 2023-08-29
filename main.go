@@ -8,10 +8,11 @@ import (
 
 	git "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	_ "github.com/joho/godotenv/autoload" // Autoload .env
 )
 
 func main() {
-	directory := "."
+	directory := os.Getenv("DIRECTORY")
 	// Opens an already existing repository.
 	r, err := git.PlainOpen(directory)
 	CheckIfError(err)
@@ -35,8 +36,8 @@ func main() {
 	Info("git commit -m \"example go-git commit\"")
 	commit, err := w.Commit("example go-git commit", &git.CommitOptions{
 		Author: &object.Signature{
-			Name:  "John Doe",
-			Email: "john@doe.org",
+			Name:  os.Getenv("COMMIT_NAME"),
+			Email: os.Getenv("COMMIT_EMAIL"),
 			When:  time.Now(),
 		},
 	})
